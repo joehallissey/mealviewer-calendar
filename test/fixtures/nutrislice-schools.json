@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Roosevelt Middle School",
+    "slug": "roosevelt-middle",
+    "active_menu_types": [
+      {
+        "name": "Lunch",
+        "slug": "ms-lunch"
+      }
+    ]
+  },
+  {
+    "name": "Lincoln Elementary",
+    "slug": "lincoln-elementary",
+    "timezone": null,
+    "active_menu_types": [
+      {
+        "name": "Lunch",
+        "slug": "ele-menu"
+      },
+      {
+        "name": "Breakfast",
+        "slug": "breakfast"
+      }
+    ]
+  },
+  {
+    "name": "Summer Camp",
+    "slug": "summer-camp",
+    "active_menu_types": []
+  }
+]

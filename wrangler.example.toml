@@ -9,6 +9,8 @@ compatibility_date = "2026-10-01"
 [vars]
 # The last part of your school's MealViewer URL:
 #   https://schools.mealviewer.com/school/LincolnES  ->  "LincolnES"
+# or, if your school uses Nutrislice, its whole menu link:
+#   "https://lincolnisd.nutrislice.com/menu/lincoln-elementary"
 SCHOOL_ID = "YOUR-SCHOOL-ID"
 
 # Your local time zone (IANA name), e.g. "America/New_York", "America/Denver", "America/Los_Angeles", "Pacific/Honolulu"
@@ -21,8 +23,9 @@ TIMEZONE = "America/New_York"
 # Names can use letters, numbers and dashes. Feeds use the SCHOOL_ID, SCHOOL_NAME and
 # TIMEZONE above unless they set their own.
 #
-# MEAL is the menu name exactly as MealViewer shows it, e.g. "Lunch", "Elementary Lunch",
-# "Breakfast", "Afternoon Snack". Visit https://<your-worker>/menus after deploying to list them.
+# MEAL is the menu name exactly as MealViewer or Nutrislice shows it, e.g. "Lunch", "Elementary Lunch",
+# "Breakfast", "Afternoon Snack". Run `npm run menus -- <your school's link>`, or visit
+# https://<your-worker>/menus after deploying, to list them.
 
 [vars.FEEDS.lunch]
 MEAL = "Lunch"

@@ -1,0 +1,62 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//mealviewer-calendar//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Lincoln Lunch
+X-WR-TIMEZONE:America/Denver
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VEVENT
+UID:lunch-LincolnES-20261019@school-lunch
+DTSTAMP:20261025T150000Z
+DTSTART;VALUE=DATE:20261019
+DTEND;VALUE=DATE:20261020
+SUMMARY:🍽 Lincoln Lunch: Holiday Meal! Roast Turkey
+DESCRIPTION:Entrées: Roast Turkey\, Dinner Roll\nVeggies: Mashed Potatoes\
+ nFruit: Fresh Apple
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:lunch-LincolnES-20261026@school-lunch
+DTSTAMP:20261025T150000Z
+DTSTART;VALUE=DATE:20261026
+DTEND;VALUE=DATE:20261027
+SUMMARY:🍽 Lincoln Lunch: Chicken Tenders / Toasted Grilled Cheese / Nach
+ os with Cheese Sauce
+DESCRIPTION:Entrées: Chicken Tenders\, Toasted Grilled Cheese\, SBJ Sandwi
+ ch\, Nachos with Cheese Sauce\nVeggies: Seasoned Corn\nSides: Whole Grain 
+ Roll\nFruit: Fresh Apple
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:lunch-LincolnES-20261027@school-lunch
+DTSTAMP:20261025T150000Z
+DTSTART;VALUE=DATE:20261027
+DTEND;VALUE=DATE:20261028
+SUMMARY:🍽 Lincoln Lunch: Beef Tacos / Cheese Quesadilla
+DESCRIPTION:Entrées: Beef Tacos\, Cheese Quesadilla\nVeggies: Refried Bean
+ s\nFruit: Pear Slices
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:lunch-LincolnES-20261028@school-lunch
+DTSTAMP:20261025T150000Z
+DTSTART;VALUE=DATE:20261028
+DTEND;VALUE=DATE:20261029
+SUMMARY:🍽 Lincoln Lunch: Dinner Roll
+DESCRIPTION:Entrées: Dinner Roll\nVeggies: Garden Salad
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:lunch-LincolnES-20261102@school-lunch
+DTSTAMP:20261025T150000Z
+DTSTART;VALUE=DATE:20261102
+DTEND;VALUE=DATE:20261103
+SUMMARY:🍽 Lincoln Lunch: Spaghetti\, Meat Sauce\; and a very long descri
+ ption that goes on and on to force folding of lines
+DESCRIPTION:Entrées: Spaghetti\, Meat Sauce\; and a very long description 
+ that goes on and on to force folding of lines\nVeggies: Steamed Broccoli
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

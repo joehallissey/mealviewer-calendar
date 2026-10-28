@@ -1,0 +1,357 @@
+{
+  "start_date": "2026-10-26",
+  "menu_type_id": 1234,
+  "days": [
+    {
+      "date": "2026-10-25",
+      "menu_items": []
+    },
+    {
+      "date": "2026-10-26",
+      "menu_items": [
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Chicken Tenders- Served with",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "side",
+          "food": {
+            "name": "Mac n Cheese",
+            "food_category": "side"
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "entree",
+          "food": {
+            "name": "Vegetarian Option: Mac n Cheese",
+            "food_category": "entree"
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Green Beans",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Grapes",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Chocolate Milk",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "1% Low Fat Milk",
+            "food_category": ""
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-10-27",
+      "menu_items": [
+        {
+          "is_section_title": true,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "Choose one",
+          "category": "",
+          "food": null
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Penne w/ Beef Meatballs & Marinara",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "entree",
+          "food": {
+            "name": "Vegetarian Option: Penne w/ Marinara",
+            "food_category": "entree"
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Garlic Breadstick",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Ranch",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Apple Slices",
+            "food_category": ""
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-10-28",
+      "menu_items": [
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "Menu items are subject to change based on product availability",
+          "category": "",
+          "food": null
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "EARLY RELEASE",
+          "category": "",
+          "food": null
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "entree",
+          "food": {
+            "name": "Cheeseburger",
+            "food_category": "entree"
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "entree",
+          "food": {
+            "name": "Vegetarian Option: Black Bean Burger",
+            "food_category": "entree"
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Smile Fries",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Diced Peaches",
+            "food_category": ""
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-10-29",
+      "menu_items": [
+        {
+          "is_section_title": false,
+          "is_station_header": true,
+          "is_holiday": false,
+          "text": "Grill",
+          "category": "",
+          "food": null
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Turkey Sausage & French Toast",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Cereal with Milk",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Hashbrown",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Mixed Fruit",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Maple Syrup",
+            "food_category": ""
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-10-30",
+      "menu_items": [
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "entree",
+          "food": {
+            "name": "Cheese Pizza Slice",
+            "food_category": "entree"
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "entree",
+          "food": {
+            "name": "Pepperoni Pizza Slice",
+            "food_category": "entree"
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Watermelon",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Carrots",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Watermelon",
+            "food_category": ""
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-10-31",
+      "menu_items": []
+    }
+  ]
+}

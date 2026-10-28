@@ -1,4 +1,4 @@
-// Turns schools' MealViewer menus into iCalendar feeds that Skylight, Google Calendar,
+// Turns schools' MealViewer or Nutrislice menus into iCalendar feeds that Skylight, Google Calendar,
 // Apple Calendar etc. can subscribe to. Settings come from the [vars] in wrangler.toml:
 // each [vars.FEEDS.<name>] table becomes a feed at /<name>.ics, or without FEEDS the
 // top-level settings make a single /lunch.ics feed.
@@ -15,7 +15,7 @@ const CONDIMENTS = new Set([
 ]);
 // Standalone sauces/garnishes ("Sweet Chili Sauce"), but not dishes served with one
 // ("Nachos with Cheese Sauce", "Biscuits and Gravy", "Chips & Dip").
-const CONDIMENT_SUFFIX = /\b(sauce|dressing|dip|gravy)$/i;
+const CONDIMENT_SUFFIX = /\b(sauce|dressing|dip|gravy|syrup)$/i;
 const SERVED_WITH = /\bw\/|\bwith\b|\band\b|&/i;
 const GARNISH = /\bgarnish$/i;
 // Section headers, for menus typed entirely in capitals where case alone can't tell them apart.
@@ -23,6 +23,22 @@ const HEADER_NAME = /^(featured |daily )?(entrees?|vegetables?|fruits?|sides?|gr
 // Everyday staples (sunbutter & jelly sandwiches, bread rolls) stay in the notes but don't crowd
 // the event title. "Egg Roll" and "Spring Roll" are mains, so only bread-type rolls match.
 const TITLE_SKIP = /^(SBJ|WBJ|PBJ) Sandwich$|\b(dinner|bread|wheat|whole grain|wg|hawaiian) roll$/i;
+// Nutrislice: second choices ("Vegetarian Option: Mac n Cheese") stay out of the title, and a dish
+// written as "Chicken Tenders- Served with" loses the dangling "served with".
+const ALTERNATE = /^(vegetarian|vegan|meatless|alternate|alt\.?)\s+(option|entr[eé]e|choice)\b/i;
+const SERVED_WITH_TAIL = /\s*[-–—:,]?\s*(served|comes) with:?$/i;
+// Nutrislice lists milk cartons as dishes ("Chocolate Milk"); "Cereal with Milk" is a real dish.
+const MILK = /\bmilk$/i;
+const WITH = /\bwith\b|\bw\//i;
+// Notes longer than this ("Menu items are subject to change...") are disclaimers, not day themes.
+const NOTE_MAX_LENGTH = 30;
+
+// A Nutrislice menu link: https://<district>.nutrislice.com/menu/<school>[/<menu type>[/<date>]]
+const NUTRISLICE_URL = /^(?:https?:\/\/)?([a-z0-9-]+)\.nutrislice\.com\/menu\/([a-z0-9-]+)(?:\/(?!\d{4}-\d{2}-\d{2}(?:[/?#]|$))([a-z0-9-]+))?(?:[/?#]|$)/i;
+const SOURCE_NAMES = { mealviewer: "MealViewer", nutrislice: "Nutrislice" };
+
+// A problem with the settings rather than with the menu site, shown to the user as is.
+class SetupError extends Error {}
 
 export default {
   async fetch(request, env, ctx) {
@@ -39,7 +55,7 @@ export default {
       return new Response(err.message, { status: 500 });
     }
 
-    // Lists the menu names MealViewer has for each configured school, to help pick the right MEAL setting.
+    // Lists the menu names each configured school has, to help pick the right MEAL setting.
     if (url.pathname === "/menus") {
       const problems = [...feeds.values()].filter((feed) => feed.error).map((feed) => `Feed "${feed.feedName}": ${feed.error}\n`);
       const schools = new Map([...feeds.values()].filter((feed) => !feed.error).map((feed) => [feed.schoolId, feed]));
@@ -49,12 +65,14 @@ export default {
           try {
             const { schoolName, menuNames } = await fetchMenuNames(feed);
             const school = schoolName ? `${schoolName} (${feed.schoolId})` : feed.schoolId;
+            const hint = feed.source === "nutrislice" ? "Set MEAL to one of these names (or the code in brackets):" : "Set MEAL to one of these:";
             return menuNames.length
-              ? `Menus for ${school}. Set MEAL to one of these:\n\n${menuNames.join("\n")}\n`
+              ? `Menus for ${school}. ${hint}\n\n${menuNames.join("\n")}\n`
               : `No menus found for ${school} in the next few weeks. Check SCHOOL_ID, or try again once the school posts its menu.\n`;
           } catch (err) {
+            if (err instanceof SetupError) return `${err.message}\n`;
             console.error("Failed to load menu names:", err);
-            return `Couldn't reach MealViewer for ${feed.schoolId} right now. Try again in a few minutes.\n`;
+            return `Couldn't reach ${SOURCE_NAMES[feed.source]} for ${feed.schoolId} right now. Try again in a few minutes.\n`;
           }
         }),
       );
@@ -79,6 +97,7 @@ export default {
       const days = await fetchMenu(config);
       ics = buildCalendar(days, config);
     } catch (err) {
+      if (err instanceof SetupError) return new Response(err.message, { status: 500 });
       console.error("Failed to load menu:", err);
       return new Response("Menu temporarily unavailable", { status: 502 });
     }
@@ -141,7 +160,11 @@ function readFeeds(env) {
 
 function readFeed(feedName, vars) {
   const schoolId = String(vars.SCHOOL_ID ?? "").trim();
-  if (!/^[A-Za-z0-9-]+$/.test(schoolId) || schoolId === "YOUR-SCHOOL-ID") {
+  const nutrislice = schoolId.match(NUTRISLICE_URL);
+  if (!nutrislice && /nutrislice\.com/i.test(schoolId)) {
+    throw new Error(`SCHOOL_ID for the "${feedName}" feed looks like a Nutrislice link, but not a school's menu page. Open the school's menu on Nutrislice and copy that link (https://<district>.nutrislice.com/menu/<school>/...).`);
+  }
+  if (!nutrislice && (!/^[A-Za-z0-9-]+$/.test(schoolId) || schoolId === "YOUR-SCHOOL-ID")) {
     throw new Error(`SCHOOL_ID is not set for the "${feedName}" feed. Add it under [vars] or [vars.FEEDS.${feedName}] in wrangler.toml and redeploy.`);
   }
   const timezone = String(vars.TIMEZONE || "America/New_York");
@@ -150,15 +173,22 @@ function readFeed(feedName, vars) {
   } catch {
     throw new Error(`TIMEZONE "${timezone}" is not a valid IANA time zone name.`);
   }
-  const meal = String(vars.MEAL || "Lunch");
+  // A Nutrislice link can name the menu type itself (".../menu/lincoln-elementary/lunch"), so MEAL can be left out.
+  const menuSlug = vars.MEAL ? null : nutrislice?.[3]?.toLowerCase();
+  const meal = String(vars.MEAL || menuSlug || "Lunch");
   const { word, emoji } = mealLabel(meal);
   // An optional short school name ("Lincoln") goes into the labels, so several schools' calendars
   // can be told apart on one board: "Lincoln Lunch" / "🍽 Lincoln Lunch:".
   const schoolName = String(vars.SCHOOL_NAME ?? "").replace(/[\x00-\x1f\x7f]+/g, " ").trim();
   const label = schoolName ? `${schoolName} ${word}` : word;
+  const source = nutrislice
+    ? { source: "nutrislice", district: nutrislice[1].toLowerCase(), school: nutrislice[2].toLowerCase(), menuSlug }
+    : { source: "mealviewer" };
   return {
     feedName,
-    schoolId,
+    ...source,
+    // Part of each event's UID, so it must stay the same for as long as the feed exists.
+    schoolId: nutrislice ? `${source.district}-${source.school}` : schoolId,
     meal,
     timezone,
     calendarName: String(vars.CALENDAR_NAME || (schoolName ? label : `School ${word}`)),
@@ -174,38 +204,60 @@ function mealLabel(meal) {
   return { word: "Lunch", emoji: "🍽" };
 }
 
-async function fetchSchedules({ schoolId, timezone }) {
-  const today = todayInTZ(timezone);
-  const start = addDays(today, -DAYS_BACK);
-  const end = addDays(today, DAYS_AHEAD);
-  const api = `https://api.mealviewer.com/api/v4/school/${encodeURIComponent(schoolId)}/${mdy(start)}/${mdy(end)}/0`;
-
-  const res = await fetch(api, {
+async function fetchJson(url, sourceName) {
+  const res = await fetch(url, {
     headers: {
       "User-Agent": "Mozilla/5.0 (compatible; mealviewer-calendar)",
       Accept: "application/json",
     },
     signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   });
-  if (!res.ok) throw new Error(`MealViewer returned ${res.status}`);
-  const data = await res.json();
+  if (!res.ok) throw new Error(`${sourceName} returned ${res.status}`);
+  return res.json();
+}
+
+// The first and last day each feed covers, in the school's time zone.
+function feedWindow(timezone) {
+  const today = todayInTZ(timezone);
+  return { start: addDays(today, -DAYS_BACK), end: addDays(today, DAYS_AHEAD) };
+}
+
+function isValidDate(date) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(date) && !Number.isNaN(Date.parse(`${date}T12:00:00Z`));
+}
+
+// Each source returns the feed's days as { date, theme, title, description }.
+function fetchMenu(config) {
+  return config.source === "nutrislice" ? fetchNutrisliceMenu(config) : fetchMealViewerMenu(config);
+}
+
+function fetchMenuNames(config) {
+  return config.source === "nutrislice" ? fetchNutrisliceMenuNames(config) : fetchMealViewerMenuNames(config);
+}
+
+// MealViewer
+
+async function fetchSchedules({ schoolId, timezone }) {
+  const { start, end } = feedWindow(timezone);
+  const api = `https://api.mealviewer.com/api/v4/school/${encodeURIComponent(schoolId)}/${mdy(start)}/${mdy(end)}/0`;
+  const data = await fetchJson(api, "MealViewer");
   return {
     schoolName: cleanText(data?.physicalLocation?.name),
     schedules: Array.isArray(data?.menuSchedules) ? data.menuSchedules : [],
   };
 }
 
-// Cleans text from MealViewer: control characters out, whitespace collapsed.
+// Cleans text from the menu sites: control characters out, whitespace collapsed.
 function cleanText(value) {
   return String(value ?? "").replace(/[\x00-\x1f\x7f]+/g, " ").replace(/\s+/g, " ").trim();
 }
 
-// Menu names are matched loosely ("Lunch " == "lunch"), since MealViewer data has stray spaces.
+// Menu names are matched loosely ("Lunch " == "lunch"), since the menu data has stray spaces.
 function sameName(a, b) {
   return cleanText(a).toLowerCase() === cleanText(b).toLowerCase();
 }
 
-async function fetchMenuNames(config) {
+async function fetchMealViewerMenuNames(config) {
   const { schoolName, schedules } = await fetchSchedules(config);
   const names = new Set();
   for (const schedule of schedules) {
@@ -221,7 +273,26 @@ function isAllCaps(name) {
   return name === name.toUpperCase() && /[A-Z]/.test(name);
 }
 
-async function fetchMenu(config) {
+// Drops section headers and condiments from one day's items, and tidies dishes typed in capitals.
+function tidyItems(items) {
+  // Section headers like "FEATURED ENTREES" are in capitals. Some schools type every dish in
+  // capitals too, so only treat capitals as a header when most of the menu isn't in capitals.
+  const capsCount = items.filter((item) => isAllCaps(item.name)).length;
+  const capsIsHeader = capsCount * 2 < items.length;
+
+  const kept = [];
+  for (const item of items) {
+    let { name } = item;
+    if (isAllCaps(name)) {
+      if (capsIsHeader || HEADER_NAME.test(name)) continue;
+      name = titleCase(name);
+    }
+    if (!isCondiment(name)) kept.push({ ...item, name });
+  }
+  return kept;
+}
+
+async function fetchMealViewerMenu(config) {
   const { meal } = config;
   const { schedules } = await fetchSchedules(config);
 
@@ -230,7 +301,7 @@ async function fetchMenu(config) {
     const date = String(schedule.dateInformation?.dateFull ?? "").slice(0, 10);
     const block = (schedule.menuBlocks ?? []).find((b) => sameName(b.blockName, meal));
     // A malformed date (e.g. month 13) skips just that day rather than failing the whole feed.
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(Date.parse(`${date}T12:00:00Z`)) || !block) continue;
+    if (!isValidDate(date) || !block) continue;
 
     const items = [];
     let theme = null;
@@ -246,25 +317,124 @@ async function fetchMenu(config) {
       }
     }
 
-    // Section headers like "FEATURED ENTREES" are in capitals. Some schools type every dish in
-    // capitals too, so only treat capitals as a header when most of the menu isn't in capitals.
-    const capsCount = items.filter((item) => isAllCaps(item.name)).length;
-    const capsIsHeader = capsCount * 2 < items.length;
-
     const groups = Object.fromEntries(Object.keys(KEEP_TYPES).map((type) => [type, []]));
-    for (const item of items) {
-      let { name } = item;
-      if (isAllCaps(name)) {
-        if (capsIsHeader || HEADER_NAME.test(name)) continue;
-        name = titleCase(name);
-      }
-      if (isCondiment(name)) continue;
-      const group = groups[item.type];
-      if (!group.includes(name)) group.push(name);
+    for (const { type, name } of tidyItems(items)) {
+      if (!groups[type].includes(name)) groups[type].push(name);
     }
-    if (Object.values(groups).some((group) => group.length)) days.push({ date, theme, groups });
+    if (!Object.values(groups).some((group) => group.length)) continue;
+
+    const mains = groups.ENTREES.filter((name) => !TITLE_SKIP.test(name));
+    // Fall back through the groups so a snack that's only fruit still gets a title.
+    const title = [mains, ...Object.values(groups)].find((items) => items.length).join(" / ");
+    const description = Object.entries(KEEP_TYPES)
+      .filter(([type]) => groups[type].length)
+      .map(([type, label]) => `${label}: ${groups[type].join(", ")}`)
+      .join("\n");
+    days.push({ date, theme, title, description });
   }
   return days;
+}
+
+// Nutrislice
+
+async function fetchNutrisliceSchool({ district, school, feedName }) {
+  const schools = await fetchJson(`https://${district}.api.nutrislice.com/menu/api/schools/?format=json`, "Nutrislice");
+  const found = Array.isArray(schools) && schools.find((s) => String(s?.slug ?? "").toLowerCase() === school);
+  if (!found) {
+    throw new SetupError(`Nutrislice has no school "${school}" in the "${district}" district. Check the SCHOOL_ID link for the "${feedName}" feed.`);
+  }
+  const menuTypes = (Array.isArray(found.active_menu_types) ? found.active_menu_types : [])
+    .map((type) => ({ name: cleanText(type?.name), slug: String(type?.slug ?? "").toLowerCase() }))
+    .filter((type) => /^[a-z0-9-]+$/.test(type.slug));
+  return { schoolName: cleanText(found.name), menuTypes };
+}
+
+async function fetchNutrisliceMenuNames(config) {
+  const { schoolName, menuTypes } = await fetchNutrisliceSchool(config);
+  return { schoolName, menuNames: menuTypes.map((type) => `${type.name || type.slug} (${type.slug})`) };
+}
+
+// The menu type's code in Nutrislice links ("ele-menu"), from the link itself or by looking MEAL up.
+async function nutrisliceMenuSlug(config) {
+  if (config.menuSlug) return config.menuSlug;
+  const { menuTypes } = await fetchNutrisliceSchool(config);
+  const match = menuTypes.find((type) => sameName(type.name, config.meal) || sameName(type.slug, config.meal));
+  if (match) return match.slug;
+  // Between school years a school may list no menus at all. The feed stays empty until it posts them.
+  if (!menuTypes.length) return null;
+  const names = menuTypes.map((type) => type.name || type.slug).join(", ");
+  throw new SetupError(`No menu called "${config.meal}" for the "${config.feedName}" feed. Set MEAL to one of: ${names}.`);
+}
+
+async function fetchNutrisliceMenu(config) {
+  const { district, school, timezone } = config;
+  const slug = await nutrisliceMenuSlug(config);
+  if (!slug) return [];
+
+  // Nutrislice serves a week at a time: the week containing the date asked for. Dates seven days
+  // apart from the first day through the last cover every week in between, however the district's
+  // weeks start. If any week fails the whole feed fails, since a calendar app given a feed with a
+  // week missing would delete that week's events.
+  const { start, end } = feedWindow(timezone);
+  const dates = [];
+  for (let date = start; ; date = addDays(date, 7)) {
+    dates.push(date);
+    if (date >= end) break;
+  }
+  const weeks = await Promise.all(
+    dates.map((date) => {
+      const [y, m, d] = date.split("-");
+      return fetchJson(`https://${district}.api.nutrislice.com/menu/api/weeks/school/${school}/menu-type/${slug}/${y}/${m}/${d}/?format=json`, "Nutrislice");
+    }),
+  );
+
+  const days = new Map();
+  for (const week of weeks) {
+    for (const day of Array.isArray(week?.days) ? week.days : []) {
+      const parsed = nutrisliceDay(day);
+      if (parsed && parsed.date >= start && parsed.date <= end) days.set(parsed.date, parsed);
+    }
+  }
+  return [...days.values()].sort((a, b) => a.date.localeCompare(b.date));
+}
+
+// Nutrislice tags dishes as "entree" or "side" unreliably (the main dish is often untagged), so the
+// title uses the tagged entrées when there are any besides alternates, else the first dish served.
+// The description lists every dish in the order served.
+function nutrisliceDay(day) {
+  const date = String(day?.date ?? "");
+  if (!isValidDate(date)) return null;
+
+  let theme = null;
+  const foods = [];
+  for (const row of Array.isArray(day.menu_items) ? day.menu_items : []) {
+    // Holidays ("Holiday Break"), headings and station names aren't dishes.
+    if (!row || row.is_holiday || row.is_section_title || row.is_station_header) continue;
+    if (!row.food) {
+      // A note before the first dish ("Early Release") leads the title, like MealViewer's "*HOLIDAY MEAL!*".
+      const note = cleanText(row.text);
+      if (note && note.length <= NOTE_MAX_LENGTH && !foods.length && !theme) theme = isAllCaps(note) ? titleCase(note) : note;
+      continue;
+    }
+    const name = cleanText(row.food.name).replace(SERVED_WITH_TAIL, "");
+    if (!name || (MILK.test(name) && !WITH.test(name))) continue;
+    const category = String(row.category || row.food.food_category || "").toLowerCase();
+    foods.push({ name, entree: category === "entree" || category === "main" });
+  }
+
+  const items = [];
+  for (const item of tidyItems(foods)) {
+    const seen = items.find((other) => other.name === item.name);
+    if (!seen) items.push(item);
+    else seen.entree ||= item.entree;
+  }
+  if (!items.length) return null;
+
+  const mains = items.filter((item) => item.entree && !ALTERNATE.test(item.name) && !TITLE_SKIP.test(item.name));
+  const title = (mains.length ? mains : [items.find((item) => !TITLE_SKIP.test(item.name)) ?? items[0]])
+    .map((item) => item.name)
+    .join(" / ");
+  return { date, theme, title, description: items.map((item) => item.name).join("\n") };
 }
 
 function buildCalendar(days, { feedName, schoolId, timezone, calendarName, eventPrefix }) {
@@ -281,17 +451,10 @@ function buildCalendar(days, { feedName, schoolId, timezone, calendarName, event
     "X-PUBLISHED-TTL:PT6H",
   ];
 
-  for (const { date, theme, groups } of days) {
+  for (const { date, theme, title: dishes, description } of days) {
     const ymd = date.replace(/-/g, "");
     const next = addDays(date, 1).replace(/-/g, "");
-    const mains = groups.ENTREES.filter((name) => !TITLE_SKIP.test(name));
-    // Fall back through the groups so a snack that's only fruit still gets a title.
-    const dishes = [mains, ...Object.values(groups)].find((items) => items.length).join(" / ");
     const title = theme ? `${theme} ${dishes}` : dishes;
-    const description = Object.entries(KEEP_TYPES)
-      .filter(([type]) => groups[type].length)
-      .map(([type, label]) => `${label}: ${groups[type].join(", ")}`)
-      .join("\n");
 
     lines.push(
       "BEGIN:VEVENT",

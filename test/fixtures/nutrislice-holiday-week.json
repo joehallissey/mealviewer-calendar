@@ -1,0 +1,104 @@
+{
+  "start_date": "2026-11-23",
+  "menu_type_id": 1234,
+  "days": [
+    {
+      "date": "2026-11-22",
+      "menu_items": []
+    },
+    {
+      "date": "2026-11-23",
+      "menu_items": [
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Wheat Dinner Roll",
+            "food_category": ""
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "main",
+          "food": {
+            "name": "Turkey & Gravy",
+            "food_category": "main"
+          }
+        },
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": false,
+          "text": "",
+          "category": "",
+          "food": {
+            "name": "Corn",
+            "food_category": ""
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-24",
+      "menu_items": [
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": true,
+          "text": "Fall Break",
+          "category": "",
+          "food": null
+        }
+      ]
+    },
+    {
+      "date": "2026-11-25",
+      "menu_items": [
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": true,
+          "text": "Fall Break",
+          "category": "",
+          "food": null
+        }
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "menu_items": [
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": true,
+          "text": "Thanksgiving",
+          "category": "",
+          "food": null
+        }
+      ]
+    },
+    {
+      "date": "2026-11-27",
+      "menu_items": [
+        {
+          "is_section_title": false,
+          "is_station_header": false,
+          "is_holiday": true,
+          "text": "Fall Break",
+          "category": "",
+          "food": null
+        }
+      ]
+    },
+    {
+      "date": "2026-11-28",
+      "menu_items": []
+    }
+  ]
+}

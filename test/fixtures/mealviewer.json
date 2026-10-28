@@ -1,0 +1,337 @@
+{
+  "physicalLocation": {
+    "name": "LINCOLN ELEMENTARY"
+  },
+  "menuSchedules": [
+    {
+      "dateInformation": {
+        "dateFull": "2026-10-19T00:00:00"
+      },
+      "menuBlocks": [
+        {
+          "blockName": "Elementary Lunch",
+          "cafeteriaLineList": {
+            "data": [
+              {
+                "foodItemList": {
+                  "data": [
+                    {
+                      "item_Name": "*HOLIDAY MEAL!*",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "Roast Turkey",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "Dinner Roll",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "Mashed Potatoes",
+                      "item_Type": "VEGETABLE"
+                    },
+                    {
+                      "item_Name": "Turkey Gravy",
+                      "item_Type": "VEGETABLE"
+                    },
+                    {
+                      "item_Name": "Cranberry Sauce",
+                      "item_Type": "FRUIT"
+                    },
+                    {
+                      "item_Name": "Fresh Apple",
+                      "item_Type": "FRUIT"
+                    },
+                    {
+                      "item_Name": "1% Milk",
+                      "item_Type": "MILK"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "blockName": "Breakfast",
+          "cafeteriaLineList": {
+            "data": [
+              {
+                "foodItemList": {
+                  "data": [
+                    {
+                      "item_Name": "Pancakes",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "Syrup",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "Orange Juice",
+                      "item_Type": "FRUIT"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "dateInformation": {
+        "dateFull": "2026-10-26T00:00:00"
+      },
+      "menuBlocks": [
+        {
+          "blockName": "Elementary Lunch ",
+          "cafeteriaLineList": {
+            "data": [
+              {
+                "foodItemList": {
+                  "data": [
+                    {
+                      "item_Name": "FEATURED ENTREES",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "Chicken Tenders",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "Toasted Grilled Cheese",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "SBJ Sandwich",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "Chicken Tenders",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "Seasoned Corn",
+                      "item_Type": "VEGETABLE"
+                    },
+                    {
+                      "item_Name": "Whole Grain Roll",
+                      "item_Type": "Breads/Grains"
+                    },
+                    {
+                      "item_Name": "Ranch",
+                      "item_Type": "VEGETABLE"
+                    },
+                    {
+                      "item_Name": "Fresh Apple",
+                      "item_Type": "FRUIT"
+                    },
+                    {
+                      "item_Name": "Nachos with Cheese Sauce",
+                      "item_Type": "ENTREES"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "blockName": "Afternoon Snack",
+          "cafeteriaLineList": {
+            "data": [
+              {
+                "foodItemList": {
+                  "data": [
+                    {
+                      "item_Name": "Raisins",
+                      "item_Type": "FRUIT"
+                    },
+                    {
+                      "item_Name": "Ketchup",
+                      "item_Type": "FRUIT"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "dateInformation": {
+        "dateFull": "2026-10-27T00:00:00"
+      },
+      "menuBlocks": [
+        {
+          "blockName": "Elementary Lunch",
+          "cafeteriaLineList": {
+            "data": [
+              {
+                "foodItemList": {
+                  "data": [
+                    {
+                      "item_Name": "BEEF TACOS",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "CHEESE QUESADILLA",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "ENTREES",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "REFRIED BEANS",
+                      "item_Type": "VEGETABLE"
+                    },
+                    {
+                      "item_Name": "Salsa",
+                      "item_Type": "VEGETABLE"
+                    },
+                    {
+                      "item_Name": "PEAR SLICES",
+                      "item_Type": "FRUIT"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "dateInformation": {
+        "dateFull": "2026-10-28T00:00:00"
+      },
+      "menuBlocks": [
+        {
+          "blockName": "Elementary Lunch",
+          "cafeteriaLineList": {
+            "data": [
+              {
+                "foodItemList": {
+                  "data": [
+                    {
+                      "item_Name": "Dinner Roll",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "Garden Salad",
+                      "item_Type": "VEGETABLE"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "dateInformation": {
+        "dateFull": "2026-13-01T00:00:00"
+      },
+      "menuBlocks": [
+        {
+          "blockName": "Elementary Lunch",
+          "cafeteriaLineList": {
+            "data": [
+              {
+                "foodItemList": {
+                  "data": [
+                    {
+                      "item_Name": "Pizza",
+                      "item_Type": "ENTREES"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "dateInformation": {
+        "dateFull": "2026-10-29T00:00:00"
+      },
+      "menuBlocks": [
+        {
+          "blockName": "Elementary Lunch",
+          "cafeteriaLineList": {
+            "data": [
+              {
+                "foodItemList": {
+                  "data": [
+                    {
+                      "item_Name": "1% Milk",
+                      "item_Type": "MILK"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "dateInformation": {
+        "dateFull": "2026-10-30T00:00:00"
+      },
+      "menuBlocks": [
+        {
+          "blockName": "Breakfast",
+          "cafeteriaLineList": {
+            "data": [
+              {
+                "foodItemList": {
+                  "data": [
+                    {
+                      "item_Name": "Waffles",
+                      "item_Type": "ENTREES"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "dateInformation": {
+        "dateFull": "2026-11-02T00:00:00"
+      },
+      "menuBlocks": [
+        {
+          "blockName": "Elementary Lunch",
+          "cafeteriaLineList": {
+            "data": [
+              {
+                "foodItemList": {
+                  "data": [
+                    {
+                      "item_Name": "Spaghetti, Meat Sauce; and a very long description that goes on and on to force folding of lines",
+                      "item_Type": "ENTREES"
+                    },
+                    {
+                      "item_Name": "Steamed Broccoli",
+                      "item_Type": "VEGETABLE"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

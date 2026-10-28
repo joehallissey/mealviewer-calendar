@@ -1,0 +1,68 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//mealviewer-calendar//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Lincoln Lunch
+X-WR-TIMEZONE:America/Chicago
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VEVENT
+UID:lunch-exampleisd-lincoln-elementary-20261026@school-lunch
+DTSTAMP:20261025T150000Z
+DTSTART;VALUE=DATE:20261026
+DTEND;VALUE=DATE:20261027
+SUMMARY:🍽 Lincoln Lunch: Chicken Tenders
+DESCRIPTION:Chicken Tenders\nMac n Cheese\nVegetarian Option: Mac n Cheese\
+ nGreen Beans\nGrapes
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:lunch-exampleisd-lincoln-elementary-20261027@school-lunch
+DTSTAMP:20261025T150000Z
+DTSTART;VALUE=DATE:20261027
+DTEND;VALUE=DATE:20261028
+SUMMARY:🍽 Lincoln Lunch: Penne w/ Beef Meatballs & Marinara
+DESCRIPTION:Penne w/ Beef Meatballs & Marinara\nVegetarian Option: Penne w/
+  Marinara\nGarlic Breadstick\nApple Slices
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:lunch-exampleisd-lincoln-elementary-20261028@school-lunch
+DTSTAMP:20261025T150000Z
+DTSTART;VALUE=DATE:20261028
+DTEND;VALUE=DATE:20261029
+SUMMARY:🍽 Lincoln Lunch: Early Release Cheeseburger
+DESCRIPTION:Cheeseburger\nVegetarian Option: Black Bean Burger\nSmile Fries
+ \nDiced Peaches
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:lunch-exampleisd-lincoln-elementary-20261029@school-lunch
+DTSTAMP:20261025T150000Z
+DTSTART;VALUE=DATE:20261029
+DTEND;VALUE=DATE:20261030
+SUMMARY:🍽 Lincoln Lunch: Turkey Sausage & French Toast
+DESCRIPTION:Turkey Sausage & French Toast\nCereal with Milk\nHashbrown\nMix
+ ed Fruit
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:lunch-exampleisd-lincoln-elementary-20261030@school-lunch
+DTSTAMP:20261025T150000Z
+DTSTART;VALUE=DATE:20261030
+DTEND;VALUE=DATE:20261031
+SUMMARY:🍽 Lincoln Lunch: Cheese Pizza Slice / Pepperoni Pizza Slice
+DESCRIPTION:Cheese Pizza Slice\nPepperoni Pizza Slice\nWatermelon\nCarrots
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:lunch-exampleisd-lincoln-elementary-20261123@school-lunch
+DTSTAMP:20261025T150000Z
+DTSTART;VALUE=DATE:20261123
+DTEND;VALUE=DATE:20261124
+SUMMARY:🍽 Lincoln Lunch: Turkey & Gravy
+DESCRIPTION:Wheat Dinner Roll\nTurkey & Gravy\nCorn
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR
